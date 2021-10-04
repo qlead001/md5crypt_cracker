@@ -1,0 +1,14 @@
+# Executables
+md5crypt
+permutate
+readShadow
+crack
+
+# Shadow Files
+*shadow
+
+# Log Files
+*.log
+
+# Temporary Directories
+tmp_*.*/**
