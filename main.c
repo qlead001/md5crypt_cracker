@@ -97,6 +97,14 @@ int main(int argc, char ** argv) {
         return 1;
     }
 
+    hash = (char *)malloc(sizeof(char) * (CRYPT_LEN + 1));
+    if (hash == NULL) {
+        fputs("Error: Allocation failed\n", stderr);
+	free(hashes);
+	free(passwds);
+        return 1;
+    }
+
     time(&realtime);
 #if HIGH_RES_TIME
     clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &start);
@@ -109,13 +117,12 @@ int main(int argc, char ** argv) {
             logProgress(log, argv[2]);
         }
 
-        hash = md5crypt(argv[2], passwdLen, argv[1]);
+        md5crypt(hash, argv[2], passwdLen, argv[1]);
         if ((index = checkHashes(hashes, len, hash)) != -1) {
             logPasswd(log, argv[2], hash);
             memcpy(passwds + index * (passwdLen + 1), argv[2], passwdLen + 1);
             count++;
         }
-        free(hash);
         cont = permutate(argv[2]);
     }
 
@@ -145,5 +152,6 @@ int main(int argc, char ** argv) {
 
     free(hashes);
     free(passwds);
+    free(hash);
     return 0;
 }

@@ -8,6 +8,8 @@
  * with a magic value of "1"
  *
  * # Parameters
+ *   out
+ *     buffer of size CRYPT_LEN + 1 to store the hash in
  *   passwd
  *     any char array with length passwdLen
  *   passwdLen
@@ -17,21 +19,16 @@
  *     assumed to be SALT_LEN in length which is 8
  *
  * # Return Value
- *   A char array of the base64 encoded hash stored on the
- *   heap. The user is expected to free the memory themself.
+ *   A pointer to the base64 encoded hash stored in out
  */
-char * md5crypt(const char * passwd, int passwdLen, const char * salt) {
-    const char * b64 = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"\
+char * md5crypt(char * out, const char * passwd, int passwdLen,
+                const char * salt) {
+    static const char * b64 = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"\
                         "abcdefghijklmnopqrstuvwxyz";
 
     int i, j, num;
     MD5_CTX ctx1, ctx2;
     unsigned char digest[MD5_LEN];
-    char * out = (char *)malloc(sizeof(char) * (CRYPT_LEN + 1));
-    if (out == NULL) {
-        fputs("Error: Allocation failed\n", stderr);
-        exit(1);
-    }
 
     MD5_Init(&ctx1);
     MD5_Update(&ctx1, passwd, passwdLen);

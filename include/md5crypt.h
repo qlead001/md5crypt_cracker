@@ -8,6 +8,7 @@
 #define MAGIC "$1$"
 #define MAGIC_LEN 3
 
-char * md5crypt(const char * passwd, int passwdLen, const char * salt);
+char * md5crypt(char * out, const char * passwd, int passwdLen,
+                const char * salt);
 
 #endif /* md5crypt.h */

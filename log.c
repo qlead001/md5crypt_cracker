@@ -42,8 +42,8 @@ void logPasswd(FILE * log, const char * passwd, const char * hash) {
 void fprintDuration(FILE * file, time_t secs, int nsecs) {
     int i, isFirst = 1;
     long int time[6];
-    int div[4] = {3600 * 24 * 365, 3600 * 24, 3600, 60};
-    char * word[6] = {"year", "day", "hour", "minute",
+    static const int div[4] = {3600 * 24 * 365, 3600 * 24, 3600, 60};
+    static const char * word[6] = {"year", "day", "hour", "minute",
                       "second", "nanosecond"};
 
     time[5] = nsecs;
@@ -119,8 +119,8 @@ void finalReport(time_t realtime, long int perms, int passwdCount,
 void passwdDump(const char * hashes, int hashLen, const char * passwds,
                 int passLen, FILE * file) {
     int i;
-    int passPad = (passLen > 4) ? passLen : 4;
-    int hashPad = (CRYPT_LEN > 4) ? CRYPT_LEN : 4;
+    const int passPad = (passLen > 4) ? passLen : 4;
+    const int hashPad = (CRYPT_LEN > 4) ? CRYPT_LEN : 4;
 
     /*
     fputs("\nHash", file);
