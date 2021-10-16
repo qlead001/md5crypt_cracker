@@ -41,7 +41,7 @@ CFLAGS += $(NON_DEBUG_FLAGS)
 endif
 
 # Tool for md5crypt hashing
-ifneq (,$(shell which md5pass))
+ifeq (,$(shell which md5pass))
 MD5PASS := $(DIR)md5crypt
 else
 MD5PASS = md5pass
@@ -114,6 +114,9 @@ memtest: md5crypt permutate readShadow
 	@echo "$(COL_GRN)$(basename $(word 3,$^)) had no memory errors$(COL_RST)"
 	rm -rf $(TMP_DIR)
 	@echo
+
+cracked_passwords.txt: *.log
+	python3 tools/passwords.py
 
 clean:
 	rm -f $(EXES)
