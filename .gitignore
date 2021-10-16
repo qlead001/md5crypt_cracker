@@ -7,8 +7,14 @@ crack
 # Shadow Files
 *shadow
 
+# Cracked Passwords File
+cracked_passwords.txt
+
 # Log Files
 *.log
+
+# Zip Files
+*.zip
 
 # Temporary Directories
 tmp_*.*/**

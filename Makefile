@@ -7,6 +7,9 @@ SHELL = /bin/bash
 COL_GRN := $(shell tput setaf 2)
 COL_RST := $(shell tput sgr0)
 
+# Get current directory
+DIR = $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
+
 # C related flags
 CC = gcc
 CFLAGS = -iquote include -ansi -Wall -Wextra -pedantic -Wformat=2 \
@@ -38,7 +41,11 @@ CFLAGS += $(NON_DEBUG_FLAGS)
 endif
 
 # Tool for md5crypt hashing
+ifneq (,$(shell which md5pass))
+MD5PASS := $(DIR)md5crypt
+else
 MD5PASS = md5pass
+endif
 
 # Salt used when hashing
 TEST_SALT = hfT7jp2q
@@ -114,3 +121,13 @@ clean:
 
 clean_log:
 	rm -f *.log
+
+zip: md5crypt_cracker.zip
+
+md5crypt_cracker.zip: main.c md5crypt.c log.c utils.c include/* \
+4fTgjp6q_aaaaaa_ririri.log 4fTgjp6q_ririri_iririr.log \
+4fTgjp6q_iririr_all.log writeup.md cracked_passwords.txt
+	sed -i.old -e 's#^\[REDACTED\]$$#'"$$(grep team32 \
+		cracked_passwords.txt)"'#' writeup.md
+	zip -j $@ $^
+	mv writeup.md.old writeup.md
